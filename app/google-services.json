@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "918789411149",
+    "firebase_url": "https://ziriez-429dd.firebaseio.com",
+    "project_id": "ziriez-429dd",
+    "storage_bucket": "ziriez-429dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918789411149:android:a44f050073309dae",
+        "android_client_info": {
+          "package_name": "com.example.atulsachdeva.ziriez"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918789411149-0gibppsakg3npg6efc1rqcm46akr7nv3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.atulsachdeva.ziriez",
+            "certificate_hash": "6692edce74e70f97979725b6139000368ceaf0aa"
+          }
+        },
+        {
+          "client_id": "918789411149-c3m6qp90ap76niuh3ne1fcmjiiiui4tg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMbKwrDvFrUGLxtaeENnv-zC0sdiIxOCU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918789411149-c3m6qp90ap76niuh3ne1fcmjiiiui4tg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
