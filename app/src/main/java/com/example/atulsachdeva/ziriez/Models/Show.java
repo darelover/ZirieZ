@@ -1,5 +1,7 @@
 package com.example.atulsachdeva.ziriez.Models;
 
+import java.util.HashMap;
+
 /**
  * Created by AtulSachdeva on 26/11/17.
  */
@@ -22,5 +24,12 @@ public class Show {
 
     public String getEpisode() {
         return episode;
+    }
+
+    public HashMap<String,Object> toMap(){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("name",name);
+        map.put("episode",episode);
+        return map;
     }
 }

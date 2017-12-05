@@ -2,34 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/llShowItem"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:padding="15dp"
     android:orientation="horizontal">
 
     <TextView
+        android:gravity="center"
         android:id="@+id/tvShowName"
-        android:layout_width="130dp"
-        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.SearchResult.Title"
         tools:text="Show Name" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/tvShowEpisode"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.SearchResult.Subtitle"
         tools:text="Episode" />
-
-    <Button
-        android:id="@+id/btnEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Edit" />
-
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Delete" />
 
 </LinearLayout>
