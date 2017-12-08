@@ -3,15 +3,13 @@ package com.example.atulsachdeva.ziriez.Adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.atulsachdeva.ziriez.Models.Show;
 import com.example.atulsachdeva.ziriez.R;
@@ -49,7 +47,7 @@ public class ShowFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Show, S
         return new ShowViewHolder(li.inflate(R.layout.list_item, parent, false));
     }
 
-    public void edit(int position) {
+    public void edit(int position, final String tabHeader) {
 
         final String name = getItem(position).getName();
         String episode = getItem(position).getEpisode();
@@ -74,9 +72,9 @@ public class ShowFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Show, S
                                         .getText().toString()
                         );
 
-                        FirebaseDatabase
-                                .getInstance()
-                                .getReference("ShowList")
+                        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Watching").child(tabHeader);
+
+                        reference
                                 .orderByChild("name")
                                 .equalTo(name)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -91,12 +89,12 @@ public class ShowFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Show, S
                                         HashMap<String, Object> childUpdates = new HashMap<>();
                                         childUpdates.put(key, map);
 
-                                        FirebaseDatabase.getInstance().getReference("ShowList").updateChildren(childUpdates);
+                                        reference.updateChildren(childUpdates);
                                     }
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-
+                                        Toast.makeText(context, "Cancelled", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                         notifyDataSetChanged();
@@ -113,11 +111,12 @@ public class ShowFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Show, S
         dialogEdit.show();
     }
 
-    public void delete(int position) {
+    public void delete(int position, String tabHeader) {
         String name = getItem(position).getName();
-        FirebaseDatabase
-                .getInstance()
-                .getReference("ShowList")
+
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Watching").child(tabHeader);
+
+        reference
                 .orderByChild("name")
                 .equalTo(name)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -129,16 +128,16 @@ public class ShowFirebaseRecyclerAdapter extends FirebaseRecyclerAdapter<Show, S
                         }
 //                            HashMap<String, Object> map = updatedShow.toMap();
 
-                        // removeValue()
+                        // removeValue() -- try to use this
                         HashMap<String, Object> childUpdates = new HashMap<>();
                         childUpdates.put(key, null);
 
-                        FirebaseDatabase.getInstance().getReference("ShowList").updateChildren(childUpdates);
+                        reference.updateChildren(childUpdates);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Toast.makeText(context, "Cancelled", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

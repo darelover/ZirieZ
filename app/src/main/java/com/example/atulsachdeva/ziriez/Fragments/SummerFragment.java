@@ -1,50 +1,47 @@
-package com.example.atulsachdeva.ziriez;
+package com.example.atulsachdeva.ziriez.Fragments;
 
-import android.app.Dialog;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.Icon;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
 import com.example.atulsachdeva.ziriez.Adapters.ShowFirebaseRecyclerAdapter;
 import com.example.atulsachdeva.ziriez.Models.Show;
+import com.example.atulsachdeva.ziriez.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-
-public class MainActivity extends AppCompatActivity {
-
-    RecyclerView rvList;
-    FloatingActionButton fabAdd;
+public class SummerFragment extends Fragment {
 
     ShowFirebaseRecyclerAdapter adapter;
 
+    public SummerFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment, container, false);
 
-        rvList = findViewById(R.id.rvList);
-        rvList.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView rvList = rootView.findViewById(R.id.rvList);
+        rvList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        fabAdd = findViewById(R.id.fabAdd);
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);   // what changes to be implemented in project when using this ?
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ShowList");
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Watching").child("Summer");
 
 //        for pulling all the data and limit it to 20 key- value pairs, following line is replaced by line following it
 //        Query showListQuery = reference.limitToFirst(20);
@@ -55,17 +52,17 @@ public class MainActivity extends AppCompatActivity {
                         .setQuery(showListQuery, Show.class)
                         .build();
 
-        adapter = new ShowFirebaseRecyclerAdapter(options, this);
+        adapter = new ShowFirebaseRecyclerAdapter(options, getContext());
         rvList.setAdapter(adapter);
 
         // for implementing swipe events
         ItemTouchHelper.SimpleCallback helper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
+            public float ALPHA_FULL = (float) 1.0;
+
             public int convertDpToPx(int dp) {
                 return Math.round(dp * (getResources().getDisplayMetrics().xdpi / DisplayMetrics.DENSITY_DEFAULT));
             }
-
-            public float ALPHA_FULL = (float) 1.0;
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -79,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
                 // delete
                 if (direction == ItemTouchHelper.LEFT) {
-                    adapter.delete(position);
+                    adapter.delete(position, "Summer");
                 }
                 // edit
                 else if (direction == ItemTouchHelper.RIGHT) {
-                    adapter.edit(position);
+                    adapter.edit(position, "Summer");
                 }
             }
 
@@ -144,50 +141,18 @@ public class MainActivity extends AppCompatActivity {
         };
         new ItemTouchHelper(helper).attachToRecyclerView(rvList);
 
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final Dialog dialog = new Dialog(MainActivity.this);
-                dialog.setContentView(R.layout.dialog_add);
-
-                dialog.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Show newShow = new Show(
-                                ((EditText) dialog.findViewById(R.id.etShowName))
-                                        .getText().toString(),
-                                ((EditText) dialog.findViewById(R.id.etShowEpisode))
-                                        .getText().toString()
-                        );
-
-                        reference.push().setValue(newShow);
-
-                        dialog.dismiss();
-                    }
-                });
-                dialog.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-            }
-        });
+        return rootView;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (adapter != null)
             adapter.startListening();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         if (adapter != null)
             adapter.stopListening();
