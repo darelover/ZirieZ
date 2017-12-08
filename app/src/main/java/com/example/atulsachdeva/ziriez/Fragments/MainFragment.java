@@ -23,25 +23,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-public class SummerFragment extends Fragment {
+public class MainFragment extends Fragment {
 
     ShowFirebaseRecyclerAdapter adapter;
+    String tabHeader;
 
-    public SummerFragment() {
+    public MainFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        tabHeader = getArguments().getString("TabHeader");
 
         RecyclerView rvList = rootView.findViewById(R.id.rvList);
         rvList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);   // what changes to be implemented in project when using this ?
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Watching").child("Summer");
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Watching").child(tabHeader);
 
 //        for pulling all the data and limit it to 20 key- value pairs, following line is replaced by line following it
 //        Query showListQuery = reference.limitToFirst(20);
@@ -76,11 +79,11 @@ public class SummerFragment extends Fragment {
 
                 // delete
                 if (direction == ItemTouchHelper.LEFT) {
-                    adapter.delete(position, "Summer");
+                    adapter.delete(position, tabHeader);
                 }
                 // edit
                 else if (direction == ItemTouchHelper.RIGHT) {
-                    adapter.edit(position, "Summer");
+                    adapter.edit(position, tabHeader);
                 }
             }
 
